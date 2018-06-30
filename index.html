@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Add Worker</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+
+ <script>
+   $(document).ready(function () {
+
+     var Name;
+     var Role;
+     var startDate;
+     var monthWorked;
+     var monthlyRate;
+     var totalBilled;
+
+     $("button").on("click", function() {
+
+    Name= $("#name").val().trim();
+    Role= $("#role").val().trim();
+    startDate= $("#startDate").val().trim();
+    monthWorked = $("#monthsWorked").val().trim();
+    monthlyRate = $("#monthsRate").val().trim();
+    totalBilled= $("#totalBilled").val().trim()
+
+       var config = {
+    apiKey: "AIzaSyCZQB3pQyeQNXpPcHoxTaQuB9IV5HxSks0",
+    authDomain: "um-project-dd6e2.firebaseapp.com",
+    databaseURL: "https://um-project-dd6e2.firebaseio.com",
+    projectId: "um-project-dd6e2",
+    storageBucket: "um-project-dd6e2.appspot.com",
+    messagingSenderId: "781467276835"
+  };
+  firebase.initializeApp(config);
+  var database = firebase.database();
+
+    event.preventDefault();
+    
+    
+
+    database.ref().push({
+        employeeName: Name,
+        monlhtyRate: monthlyRate,
+        monthWorked: monthWorked,
+        role: Role,
+        startDate: startDate,
+        totalBilled: totalBilled
+      });
+
+      database.ref().on("child_added", function(snapshot) {
+      // Log everything that's coming out of snapshot
+      console.log(snapshot.val());
+      console.log(snapshot.val().employeeName);
+      console.log(snapshot.val().monlhtyRate);
+      console.log(snapshot.val().monthWorked);
+      console.log(snapshot.val().role);
+      console.log(snapshot.val().startDate);
+      console.log(snapshot.val().totalBilled);
+      // Change the HTML to reflect
+      $("#name").text(snapshot.val().employeeName);
+      $("#monthsRate").text(snapshot.val().monlhtyRate);
+      $("#monthsWorked").text(snapshot.val().monthWorked);
+      $("#role").text(snapshot.val().role);
+      $("#startDate").text(snapshot.val().startDate);
+      $("#totalBilled").text(snapshot.val().totalBilled);
+
+    // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
+
+
+
+    addToTable();
+      });
+
+      function addToTable(){
+
+        var tbody = $("tbody");
+        tbody.append("<tr><td>" + Name + "</td><td>" + Role + "</td><td>" +
+            startDate + "</td><td>" + monthWorked + "</td><td>" + monthlyRate + "</td><td>" + totalBilled + "</td></tr>");
+      }
+       
+
+   });
+ 
+ 
+ </script>
+</head>
+
+<body>
+
+  <div class="container">
+      <br>
+
+    <form>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Name</label>
+          <input type="text" class="form-control" id="name" >
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">Role</label>
+          <input type="text" class="form-control" id="role" >
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Start Date</label>
+            <input type="email" class="form-control" id="startDate" >
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Months Work</label>
+            <input type="email" class="form-control" id="monthsWorked" >
+        </div>
+        <div class="form-group">
+              <label for="exampleFormControlInput1">Months rate</label>
+              <input type="email" class="form-control" id="monthsRate" >
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Total Billed</label>
+            <input type="email" class="form-control" id="totalBilled" >
+        </div>
+
+          <div>
+            <button type="button" class="btn btn-primary btn-lg">Add Worker</button>
+          </div>
+    </form>
+  <br>
+    
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Train Name</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Next Arrival</th>
+        <th scope="col">Minutes Away</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+      
+  </div>
+</body>
+
+</html>
+\
